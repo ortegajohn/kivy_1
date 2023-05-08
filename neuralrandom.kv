@@ -4,10 +4,22 @@
 
     BoxLayout:
         orientation: 'vertical'
+        Splitter:
+            sizable_from: 'bottom'
+            Label:
+                text: "NeuralRandom"
+                font_size: 32
+                color: 0.92, 0.45, 0, 1
         Label:
-            text: "NeuralRandom"
-            font_size: 64
-            color: 0.92, 0.45, 0, 1
+            id: dropdown
+            text: "Click Dropdown"
+            font_size: 32
+        Spinner:
+            id: spinner_id
+            text: "Pick Number"
+            values: ['1', '2', '3', '4', '5']
+
+            on_text: root.spinner_clicked(spinner_id.text)
         Label:
             id: random_label
             text: "-"
