@@ -1,31 +1,84 @@
 <MyRoot>:
+    do_default_tab: False
+
+    size_hint: .9, .9
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    tab_pos: 'top_mid'
 
     random_label: random_label
+    TabbedPanelItem:
+        text: "Tab 1"
 
-    BoxLayout:
-        orientation: 'vertical'
-        Splitter:
-            sizable_from: 'bottom'
+        BoxLayout:
+            orientation: 'vertical'
+            Splitter:
+                sizable_from: 'bottom'
+                Label:
+                    text: "NeuralRandom"
+                    font_size: 32
+                    color: 0.92, 0.45, 0, 1
             Label:
-                text: "NeuralRandom"
+                id: dropdown
+                text: "Click Dropdown"
                 font_size: 32
-                color: 0.92, 0.45, 0, 1
-        Label:
-            id: dropdown
-            text: "Click Dropdown"
-            font_size: 32
-        Spinner:
-            id: spinner_id
-            text: "Pick Number"
-            values: ['1', '2', '3', '4', '5']
+            Spinner:
+                id: spinner_id
+                text: "Pick Number"
+                values: ['1', '2', '3', '4', '5']
 
-            on_text: root.spinner_clicked(spinner_id.text)
+                on_text: root.spinner_clicked(spinner_id.text)
+            Label:
+                id: random_label
+                text: "-"
+                font_size: 64
+            Button:
+                text: "Generate"
+                font_size: 32
+                size: 100, 50
+                on_press: root.generate_number()
+
+    TabbedPanelItem:
+        text: "Tab 2"
         Label:
-            id: random_label
-            text: "-"
-            font_size: 64
-        Button:
-            text: "Generate"
-            font_size: 32
-            size: 100, 50
-            on_press: root.generate_number()
+            text: "Second tab"
+        BoxLayout:
+            orientation: "vertical"
+            size: root.width, root.height
+
+            padding: 50
+            spacing: 20
+
+            Label:
+                id: my_label
+                text: "Hello World!"
+                font_size: 32
+
+            Button:
+                text: "Press Me!"
+                font_size: 32
+                size_hint: .5, .5
+                pos_hint: {"center_x": 0.5}
+
+                on_release: root.animate_it(self)
+
+    TabbedPanelItem:
+        text: "Swiper"
+        Label:
+            text: "Swiper tab"
+        BoxLayout:
+            orientation: "vertical"
+            size: root.width, root.height
+
+            Carousel:
+                direction: "right"
+
+                AsyncImage:
+                    source: 'https://www.warhammer-community.com/wp-content/uploads/2021/07/dbOjvYzRFOU8mo6s-500x157.png'
+                AsyncImage:
+                    source: 'https://www.warhammer-community.com/wp-content/uploads/2023/05/rMuU9hzj69dJIhrx.jpg'
+                AsyncImage:
+                    source: 'https://www.warhammer-community.com/wp-content/uploads/2023/05/SM9bQbzJPgrNPTmf.jpg'
+
+    TabbedPanelItem:
+        text: "Add Class"
+        id: tst_add_class

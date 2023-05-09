@@ -1,10 +1,22 @@
 import kivy
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.tabbedpanel import TabbedPanel
+# from kivymd.app import MDApp
+from kivy.uix.label import Label
+from kivy.animation import Animation
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.textinput import TextInput
+from kivy.uix.button import Button
+from kivy.clock import Clock
+
 import random
+
 kivy.require('1.9.0')
-#https://www.youtube.com/watch?v=6gNpSuE01qE
-#https://buildozer.readthedocs.io/en/latest/installation.html
+
+
+# https://www.youtube.com/watch?v=6gNpSuE01qE
+# https://buildozer.readthedocs.io/en/latest/installation.html
 ## add the following line at the end of your ~/.bashrc file
 ##export PATH=$PATH:~/.local/bin/
 ##alias python='python3'
@@ -12,7 +24,60 @@ kivy.require('1.9.0')
 ##buildozer init
 ##buildozer -v android debug
 
-class MyRoot(BoxLayout):
+# class TabLayout(TabbedPanel):
+#
+#     def __init__(self):
+#         super(TabLayout, self).__init__()
+
+# class MyRoot(BoxLayout):
+class MyGridLayout(GridLayout):
+    def __init__(self, **kwargs):
+        super(MyGridLayout, self).__init__(**kwargs)
+        self.cols = 1
+        self.row_force_default = True
+        self.row_default_height = 40
+        self.col_force_default = True
+        self.col_default_width = 100
+        self.top_grid = GridLayout(
+            row_force_default=True,
+            row_default_height=40,
+            col_force_default=True,
+            col_default_width=100
+        )
+        self.top_grid.cols = 2
+
+        self.top_grid.add_widget(Label(text="Name: ",
+                                       # size_hint_y=None,
+                                       # height=50,
+                                       # size_hint_x=None,
+                                       # width=200
+                                       ))
+        self.name = TextInput(multiline=False,
+                              # size_hint_y=None,
+                              # height=50,
+                              # size_hint_x=None,
+                              # width=400
+                              )
+        self.top_grid.add_widget(self.name)
+        #Add top grid to the app
+        self.add_widget(self.top_grid)
+
+        self.submit = Button(text='Submit',
+                             font_size=32,
+                             size_hint_y=None,
+                             height=50,
+                             size_hint_x=None,
+                             width=200
+                             )
+        self.submit.bind(on_press=self.press1)
+        self.add_widget(self.submit)
+
+    def press1(self, instance):
+        name = self.name.text
+        self.add_widget(Label(text=name))
+        self.name.text = ""
+
+class MyRoot(TabbedPanel):
 
     def __init__(self):
         super(MyRoot, self).__init__()
@@ -36,11 +101,47 @@ class MyRoot(BoxLayout):
             roll_lst.append(self.dice_roll())
         return roll_lst
 
+    def animate_it(self, widget, *args):
+        animate = Animation(
+            background_color=(0, 0, 1, 1),
+            duration=.2
+        )
+        animate += Animation(
+            size_hint=(.6, .6)
+        )
+        animate += Animation(
+            size_hint=(.5, .5)
+        )
+        # Star the animation
+        animate.start(widget)
+        animate.bind(on_complete=self.my_callback)
+
+    def my_callback(self, *args):
+        self.ids.my_label.text = "Button clicked"
+
+    def add_class_tab(self):
+        test_add_class = MyGridLayout()
+        self.ids.tst_add_class.add_widget(test_add_class)
+
+    # class MyGridLayout(GridLayout):
+    #
+    #     def __init__(self, **kwargs):
+    #         super().__init__(**kwargs)
+    #         super(self.MyGridLayout, self).__init__(**kwargs)
+    #         self.cals = 2
+    #         self.add_widget(Label(text="Name: "))
+    #         self.name = TextInput(multiline=False)
+    #         self.add_widget(self.name)
+
 
 class NeuralRandom(App):
 
     def build(self):
         return MyRoot()
+        # return MyGridLayout()
+
+    def on_start(self):
+        Clock.schedule_once(lambda dt: self.root.add_class_tab())
 
 
 neuralRandom = NeuralRandom()
