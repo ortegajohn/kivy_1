@@ -8,12 +8,21 @@ from kivy.animation import Animation
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
+from kivy.uix.widget import Widget
+from kivy.properties import ObjectProperty
 from kivy.clock import Clock
+from kivy.uix.image import AsyncImage
+from kivy.factory import Factory
+from kivy.lang import Builder
+
+Builder.load_file('new_design.kv')
+# This needs to be here to display the manga images on Android
+
 
 import random
 
-kivy.require('1.9.0')
-
+# kivy.require('1.9.0')
+kivy.require('2.1.0')
 
 # https://www.youtube.com/watch?v=6gNpSuE01qE
 # https://buildozer.readthedocs.io/en/latest/installation.html
@@ -30,19 +39,24 @@ kivy.require('1.9.0')
 #         super(TabLayout, self).__init__()
 
 # class MyRoot(BoxLayout):
+
+class MyWidget(Widget):
+    def __init__(self, **kwargs):
+        super(MyWidget, self).__init__(**kwargs)
+
 class MyGridLayout(GridLayout):
     def __init__(self, **kwargs):
         super(MyGridLayout, self).__init__(**kwargs)
         self.cols = 1
-        self.row_force_default = True
-        self.row_default_height = 40
-        self.col_force_default = True
-        self.col_default_width = 100
+        # self.row_force_default = True
+        # self.row_default_height = 40
+        # self.col_force_default = True
+        # self.col_default_width = 100
         self.top_grid = GridLayout(
-            row_force_default=True,
-            row_default_height=40,
-            col_force_default=True,
-            col_default_width=100
+            # row_force_default=True,
+            # row_default_height=40,
+            # col_force_default=True,
+            # col_default_width=100
         )
         self.top_grid.cols = 2
 
@@ -122,6 +136,10 @@ class MyRoot(TabbedPanel):
     def add_class_tab(self):
         test_add_class = MyGridLayout()
         self.ids.tst_add_class.add_widget(test_add_class)
+        ## test adding image to carousel
+        im_1_src = 'https://www.warhammer-community.com/wp-content/uploads/2021/07/dbOjvYzRFOU8mo6s-500x157.png'
+        im_1 = Factory.AsyncImage(source=im_1_src, allow_stretch=True)
+        self.ids.image_1.add_widget(im_1)
 
     # class MyGridLayout(GridLayout):
     #
@@ -134,7 +152,7 @@ class MyRoot(TabbedPanel):
     #         self.add_widget(self.name)
 
 
-class NeuralRandom(App):
+class KillTeamHelper(App):
 
     def build(self):
         return MyRoot()
@@ -144,5 +162,5 @@ class NeuralRandom(App):
         Clock.schedule_once(lambda dt: self.root.add_class_tab())
 
 
-neuralRandom = NeuralRandom()
-neuralRandom.run()
+kill_team_helper = KillTeamHelper()
+kill_team_helper.run()
